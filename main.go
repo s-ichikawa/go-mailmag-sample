@@ -11,5 +11,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	println(u.HomeDir)
+	
 }
