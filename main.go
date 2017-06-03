@@ -16,7 +16,8 @@ func main() {
     }
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        if ok, err := path.Match("/data/*.txt", r.URL.Path); err != nil || !ok {
+        if ok, err := path.Match("/data/*.html", r.URL.Path); err != nil || !ok {
+            println("test")
             http.NotFound(w, r)
             return
         }
