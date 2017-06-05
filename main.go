@@ -7,6 +7,7 @@ import (
     "path"
     "path/filepath"
     "io"
+    "io/ioutil"
 )
 
 func main() {
@@ -29,6 +30,20 @@ func main() {
         }
         defer f.Close()
         io.Copy(w, f)
+    })
+
+    http.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
+        if r.Method == "POST" {
+            _, header, _ := r.FormFile("file")
+            s, _ := header.Open()
+            p := filepath.Join("files", header.Filename)
+            buf, _ := ioutil.ReadAll(s)
+            ioutil.WriteFile(p, buf, 0644)
+            http.Redirect(w, r, "/"+path, 301)
+        } else {
+            http.Redirect(w, r, "/", 301)
+        }
+
     })
     http.ListenAndServe(":8080", nil)
 }
